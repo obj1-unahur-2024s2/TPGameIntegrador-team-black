@@ -2,9 +2,9 @@
 
 ## Equipo de desarrollo
 
-- Alguien
-- Persona
-- etc.
+- Carla Porta Baldonedo
+- Candela Chiara Staccia
+- Marcos Dieguez
 
 ## Capturas
 
@@ -17,6 +17,6 @@
 
 ## Otros
 
-- Curso/Facultad
+- Programación con Objetos I - Universidad Nacional de Hurlingham
 - Versión de wollok
 - Una vez terminado, no tenemos problemas en que el repositorio sea público / queremos manternerlo privado
