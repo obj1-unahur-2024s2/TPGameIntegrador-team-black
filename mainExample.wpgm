@@ -1,26 +1,21 @@
 import wollok.game.*
 import example.*
+import niveles.*
+import paredes.*
+import elementos.*
 
 
 program Laberinto {
 	game.title("nombre del juego")
-	game.height(30)
-	game.width(30)
-	game.addVisual(personaje)
 	
-	//game.cellSize(80) //se puede cambiar el tamaño de celda
-	//game.boardGround("pruebaFondo.jpg")
+	nivel1.iniciar()
 	
-	//game.addVisual(paredes)
-	game.addVisual(instrucciones)
-	//game.schedule(100, { instrucciones.text() })
-
-	configurarTeclas.init() //hacer
 
 
 	game.start()
 }
 
+/*
 object configurarTeclas {
 	method init() {
 		keyboard.right().onPressDo({
@@ -50,4 +45,4 @@ object configurarTeclas {
 				game.addVisual(instrucciones)
 		})
 	}
-}
+}*/
