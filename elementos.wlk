@@ -11,55 +11,48 @@ class Elementos {
         game.removeVisual(self)
     }
 
-    method teAgarraron() {}
-
-    method coord(x, y) {
-      return game.at(x, y)
-    }
+    method teAgarraron(){} //?
 
     method aparecer() {
         game.addVisual(self)
     }
-
-    method agregarUb(posiciones) {
-        ubicaciones.addAll(posiciones)
-    }
 }
 
 object reloj {
-    var segundosRestantes = 180  
-    var property image = "3_00.png"  
+    var segundosRestantes = 180  // 3 minutos en segundos
+    var property image = "3_00.png"  // Imagen inicial (3:00)
     var property position = game.at(5, 26) 
 
     method iniciar() {
-        
         game.addVisual(self)
-        
+
         game.onTick(1000, "actualizarReloj", {
-            if (segundosRestantes > 0) {
+            if (self.hayTiempo()) {
                 self.restarTiempo(1)
                 self.actualizarVisual()
             } else {
-                game.removeVisual(self)  
                 self.tiempoAgotado()
             }
         })
     }
 
     method actualizarVisual() {
-        
         const minutos = segundosRestantes.div(60)
         const segundos = segundosRestantes % 60
         const nombreImagen = minutos.toString() + "_" + (if (segundos < 10) "0" + segundos else segundos.toString()) + ".png"
-        
-        
+    
         self.image(nombreImagen)
     }
 
     method tiempoAgotado() { //ver
-        game.addVisual("perdiste.png")
+        game.addVisual(new Visual(image = "perdiste.jpg"))
+        self.pararTiempo()
+        self.reiniciarTiempo() //se reinicia aunque no se reinicie el juego, dejar?
     }
 
+    method reiniciarTiempo() {
+        segundosRestantes = 180
+    }
 
     method aumentarTiempo(cantidad) {
         segundosRestantes = 180.min(segundosRestantes + cantidad)
@@ -75,11 +68,11 @@ object reloj {
       game.removeTickEvent("actualizarReloj")
     }
 
-	  method hayTiempo() = segundosRestantes > 0
+	method hayTiempo() = segundosRestantes > 0
 }
 
 object puerta {
-    const property position = game.at(24, 1)
+    var property position = game.at(24, 1)
     method image() = "puerta.png"
 
     method teAgarraron() { 
@@ -98,7 +91,6 @@ object puerta {
         game.addVisual(self)
         game.say(self, "Para pasar se necesitan 3 llaves y 10500 puntos") //se ve chiquito + a veces habla, a veces no
     }
-
 }
 
 class Puntos inherits Elementos {
@@ -106,26 +98,17 @@ class Puntos inherits Elementos {
 
     method sumar(unValor)
     method restar(unValor)
-
-    method alternarVisibilidad() {
-        if(game.hasVisual(self))
-            self.desaparecer()
-        else
-            self.aparecer()
-    }
 }
 
 class PuntosRelojPos inherits Puntos(image = "reloj-pos.png", valor = 20) {
     override method sumar(unValor) {
         reloj.aumentarTiempo(unValor)
-        //nivel2.aumentarTiempo(unValor) //resta aunque no esté corriendo el nivel 2?
     }
 
     override method restar(unValor) {}
 
     override method teAgarraron() {
         self.sumar(valor)
-        //game.removeTickEvent("visibilidad puntos reloj pos")
         self.desaparecer()
     }
 }
@@ -135,12 +118,10 @@ class PuntosRelojNeg inherits Puntos(image = "reloj-neg.png", valor = 10) {
 
     override method restar(unValor) {
         reloj.restarTiempo(unValor)
-       // nivel2.restarTiempo(unValor) //resta aunque no esté corriendo el nivel 2?
     }
 
     override method teAgarraron() {
         self.restar(valor)
-        //game.removeTickEvent("visibilidad puntos reloj neg")
         self.desaparecer()
     }
 }
@@ -155,7 +136,6 @@ class PuntosPersonajePos inherits Puntos(image = "puntos-pos.png", valor = 1000)
 
     override method teAgarraron() {
         self.sumar(valor)
-        game.removeTickEvent("visibilidad puntos pos")
         self.desaparecer()
     }
 }
@@ -169,7 +149,6 @@ class PuntosPersonajeNeg inherits Puntos(image = "puntos-neg.png", valor = 500) 
 
     override method teAgarraron() {
         self.restar(valor)
-        game.removeTickEvent("visibilidad puntos neg")
         self.desaparecer()
     }
 }
@@ -182,8 +161,15 @@ class Llave inherits Elementos(image = "llave.png") {
 }
 
 
-class Enemigo inherits Elementos(image = "") {
-    
+class Enemigo inherits Elementos(image = "fantasma.png") {
+    override method teAgarraron() {
+        personaje.perderVida()
+        personaje.position(game.at(0, 26)) //para nivel 2... no serviria si hubiera mas niveles con fantasmas
+    }
+
+    method moverse() {
+
+    }
 }
 
 class Visual {

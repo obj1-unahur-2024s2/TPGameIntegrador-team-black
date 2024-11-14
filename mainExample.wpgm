@@ -9,40 +9,7 @@ program Laberinto {
 	game.title("nombre del juego")
 	
 	nivel1.iniciar()
-	
-
+	//nivel2.iniciar()
 
 	game.start()
 }
-
-/*
-object configurarTeclas {
-	method init() {
-		keyboard.right().onPressDo({
-			if(not game.hasVisual(instrucciones)) //aca o en el metodo de moverse? pq seria una pausa para personaje/s y tiempo
-				personaje.moveteADerecha(paredes)
-		})
-		keyboard.left().onPressDo({
-			if(not game.hasVisual(instrucciones))
-				personaje.moveteAIzquierda(paredes)
-		})
-		keyboard.up().onPressDo({
-			if(not game.hasVisual(instrucciones))
-				personaje.moveteArriba(paredes)
-		})
-		keyboard.down().onPressDo({
-			if(not game.hasVisual(instrucciones))
-				personaje.moveteAbajo(paredes)
-		})
-
-		keyboard.enter().onPressDo({
-			game.removeVisual(instrucciones)
-		})
-
-		keyboard.p().onPressDo({
-			if(not game.hasVisual(instrucciones)) 
-			//game.stop() //pero para todo el juego y no se puede reanudar
-				game.addVisual(instrucciones)
-		})
-	}
-}*/
