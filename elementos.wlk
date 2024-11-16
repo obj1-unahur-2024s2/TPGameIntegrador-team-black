@@ -160,15 +160,25 @@ class Llave inherits Elementos(image = "llave.png") {
     }
 }
 
-
 class Enemigo inherits Elementos(image = "fantasma.png") {
-    override method teAgarraron() {
-        personaje.perderVida()
-        personaje.position(game.at(0, 26)) //para nivel 2... no serviria si hubiera mas niveles con fantasmas
+    var seVe = true
+    // Método para iniciar el parpadeo del enemigo cada 3 segundos
+    method iniciarParpadeo() {
+        game.onTick(3000, "parpadeoFantasma_" , {
+            // Alternar visibilidad del enemigo
+            if (seVe) {
+                seVe=false
+                self.desaparecer()
+            } else {
+                seVe = true
+                self.aparecer()
+            }
+        })
     }
 
-    method moverse() {
-
+    override method teAgarraron() {
+        personaje.perderVida()
+        self.desaparecer() // Desaparece después de afectar al personaje
     }
 }
 

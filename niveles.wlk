@@ -3,8 +3,6 @@ import example.*
 import elementos.*
 import paredes.*
 
-
-
 object nivel1 {
 	const ganaste = new Visual(image = "ganaste.jpg")
 	const perdiste = new Visual(image = "perdiste.jpg")
@@ -40,7 +38,12 @@ object nivel1 {
 		self.generarPuntos()
 
 		self.terminarJuego()
-
+		
+		keyboard.f().onPressDo({
+			self.eliminarVisuales(visuales) // Limpia los visuales actuales del nivel1
+			game.clear() // Borra el estado del juego actual
+			nivel2.iniciar() // Inicia el siguiente nivel (nivel2)
+		})
 
 
 		keyboard.right().onPressDo({
@@ -167,12 +170,10 @@ object nivel1 {
 		paredes.add(nuevaPared)
 		self.dibujar(nuevaPared)}) //raro
 	}
-
 	method generarLlave() {
 		const llaves = [new Position(x = 1, y = 1), new Position(x = 11, y = 11), 
 		new Position(x = 19, y = 17)].map({p => self.dibujar(new Llave(position = p))})
 	}
-
 
 	method generarPuntos() {
 		self.generarPuntosRelojP()
@@ -293,10 +294,6 @@ object nivel2 {
 	const posicionesPuntosP = []
 	const posicionesPuntosN = []
 	const inicioPersonaje = game.at(28, 1)
-	const fantasma1 = new Enemigo(position = game.at(11, 23))
-	const fantasma2 = new Enemigo(position = game.at(19, 13))
-	const fantasma3 = new Enemigo(position = game.at(27, 1))
-
 
     method iniciar() {
 		
@@ -312,8 +309,6 @@ object nivel2 {
 		personaje.position(game.at(0, 26))
         personaje.iniciar()
 
-		self.generarFantasmas()
-
 		puerta.position(game.at(28, 1))
 		puerta.aparecer()
 
@@ -326,7 +321,19 @@ object nivel2 {
 
 		self.terminarJuego()
 
+    // Control para finalizar el juego
+    keyboard.f().onPressDo({
+        game.clear() // Limpiar el estado del juego
+        self.eliminarVisuales(visuales)
+        reloj.pararTiempo() // Detener el reloj
 
+        // Mostrar mensaje final
+        if(self.puedeGanar()) {
+            ganaste.aparecer()
+        } else {
+            perdiste.aparecer()
+        }
+    })
 
 		keyboard.right().onPressDo({
 			if(not self.hayVisual(visuales)) //aca o en el metodo de moverse? pq seria una pausa para personaje/s y tiempo
@@ -471,12 +478,6 @@ object nivel2 {
 		new Position(x = 21, y = 25)].map({p => self.dibujar(new Llave(position = p))})
 	}
 
-	method generarFantasmas() {
-		fantasma1.aparecer()
-		fantasma2.aparecer()
-		fantasma3.aparecer()
-	}
-
 	method generarPuntos() {
 		self.generarPuntosRelojP()
 		self.generarPuntosRelojN()
@@ -586,5 +587,3 @@ object nivel2 {
 		self.iniciar()
 	} //ver
 }
-
-

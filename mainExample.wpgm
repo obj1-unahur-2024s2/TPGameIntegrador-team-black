@@ -4,7 +4,6 @@ import niveles.*
 import paredes.*
 import elementos.*
 
-
 program Laberinto {
 	game.title("nombre del juego")
 	
