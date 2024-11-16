@@ -31,7 +31,7 @@ object fondo { //ver bien
 object reloj {
     var segundosRestantes = 180  // 3 minutos en segundos
     var property image = "3_00.png"  // Imagen inicial (3:00)
-    var property position = game.at(5, 26) 
+    var property position = game.at(4, 13)  
 
     method iniciar() {
         game.addVisual(self)

@@ -7,8 +7,8 @@ import elementos.*
 program Laberinto {
 	game.title("nombre del juego")
 	
-	nivel1.iniciar()
-	//nivel2.iniciar()
+	//nivel1.iniciar()
+	nivel2.iniciar()
 
 	game.start()
 }

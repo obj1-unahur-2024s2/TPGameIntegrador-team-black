@@ -25,7 +25,7 @@ object nivel1 {
 	    game.width(30)
         game.cellSize(63)
 
-        game.boardGround("fondotierra.jpg")
+        game.boardGround("fondo.jpg")
 		//fondo.configurar("fondotierra.jpg")
 
 		self.generarParedes()
@@ -304,27 +304,27 @@ object nivel2 {
 	const posicionesRelojN = []
 	const posicionesPuntosP = []
 	const posicionesPuntosN = []
-	const inicioPersonaje = game.at(0, 26)
-	const inicioPuerta = game.at(28, 1)
-	const fantasma1 = new Enemigo(position = game.at(11, 23))
-	const fantasma2 = new Enemigo(position = game.at(19, 13))
-	const fantasma3 = new Enemigo(position = game.at(27, 1))
+	const inicioPersonaje = game.at(0, 11)
+	const inicioPuerta = game.at(14, 1)
+	const fantasma1 = new Enemigo(position = game.at(11, 8))
+	const fantasma2 = new Enemigo(position = game.at(4, 1))
+	const fantasma3 = new Enemigo(position = game.at(8, 11))
 	const enemigos = [fantasma1, fantasma2, fantasma3] //es de prueba, si sirve, se deja
 
 
 
     method iniciar() {
 		
-        game.height(30)
-	    game.width(30)
+        game.height(15)
+	    game.width(15)
         game.cellSize(63)
 
-        game.boardGround("fondotierra2.jpg")
+        game.boardGround("fondo.jpg")
 		//fondo.configurar("fondotierra2.jpg")
 
 		self.generarParedes()
 
-		personaje.visualesVidas().forEach({v => v.position(game.at(v.position().x(), 28))})
+		
 		personaje.position(inicioPersonaje)
         personaje.iniciar()
 
@@ -335,7 +335,8 @@ object nivel2 {
 		puerta.aparecer()
 
 		game.onCollideDo(personaje, {algo => algo.teAgarraron()})
-		reloj.position(game.at(5, 28))
+
+		reloj.reiniciarTiempo()
 		reloj.iniciar()
 
 		self.generarLlave()
@@ -414,78 +415,30 @@ object nivel2 {
 	method posicionesParedes(listaParedes) = listaParedes.map({p => p.position()})
 
 	method generarParedes() {
-		(0.. 28).forEach({n => posicionParedes.add(new Position(x = n, y = 0))})
-		(0.. 25).forEach({n => posicionParedes.add(new Position(x = 0, y = n))})
-		(1 .. 28).forEach({n => posicionParedes.add(new Position(x = n, y = 27))})
-		(2 .. 27).forEach({n => posicionParedes.add(new Position(x = 28, y = n))})
-		[2, 3, 13, 14, 26, 27].forEach({n => posicionParedes.add(new Position(x = n, y = 2))})
-		[1, 2].forEach({n => posicionParedes.add(new Position(x = n, y = 4))})
-		(5.. 10).forEach({n => posicionParedes.add(new Position(x = n, y = 4))})
-		(14.. 18).forEach({n => posicionParedes.add(new Position(x = n, y = 4))})
-		(20.. 26).forEach({n => posicionParedes.add(new Position(x = n, y = 4))})
-		[3, 13, 26, 27].forEach({n => posicionParedes.add(new Position(x = n, y = 6))})
-		(19.. 23).forEach({n => posicionParedes.add(new Position(x = n, y = 6))})
-		(5.. 11).forEach({n => posicionParedes.add(new Position(x = n, y = 8))})
-		[15, 25, 26].forEach({n => posicionParedes.add(new Position(x = n, y = 8))})
-		(1.. 3).forEach({n => posicionParedes.add(new Position(x = n, y = 10))})
-		(7.. 10).forEach({n => posicionParedes.add(new Position(x = n, y = 10))})
-		(14.. 21).forEach({n => posicionParedes.add(new Position(x = n, y = 10))})
-		[26, 27].forEach({n => posicionParedes.add(new Position(x = n, y = 10))})
-		(1.. 5).forEach({n => posicionParedes.add(new Position(x = n, y = 12))})
-		(9.. 14).forEach({n => posicionParedes.add(new Position(x = n, y = 12))})
-		[18, 19].forEach({n => posicionParedes.add(new Position(x = n, y = 12))})
-		(22.. 26).forEach({n => posicionParedes.add(new Position(x = n, y = 12))})
-		[2, 3, 21, 22].forEach({n => posicionParedes.add(new Position(x = n, y = 14))})
-		(10.. 18).forEach({n => posicionParedes.add(new Position(x = n, y = 14))})
-		[1, 2, 22, 23].forEach({n => posicionParedes.add(new Position(x = n, y = 16))})
-		(9.. 13).forEach({n => posicionParedes.add(new Position(x = n, y = 16))})
-		(16.. 19).forEach({n => posicionParedes.add(new Position(x = n, y = 16))})
-		[2, 3, 10, 11].forEach({n => posicionParedes.add(new Position(x = n, y = 18))})
-		(15.. 17).forEach({n => posicionParedes.add(new Position(x = n, y = 18))})
-		(21.. 25).forEach({n => posicionParedes.add(new Position(x = n, y = 18))})
-		(5.. 7).forEach({n => posicionParedes.add(new Position(x = n, y = 18))})
-		[1, 2, 19, 20].forEach({n => posicionParedes.add(new Position(x = n, y = 20))})
-		(6.. 9).forEach({n => posicionParedes.add(new Position(x = n, y = 20))})
-		(2.. 7).forEach({n => posicionParedes.add(new Position(x = n, y = 22))})
-		(13.. 15).forEach({n => posicionParedes.add(new Position(x = n, y = 22))})
-		(21.. 23).forEach({n => posicionParedes.add(new Position(x = n, y = 22))})
-		(11.. 14).forEach({n => posicionParedes.add(new Position(x = n, y = 24))})
-		(21.. 25).forEach({n => posicionParedes.add(new Position(x = n, y = 24))})
-		(14.. 19).forEach({n => posicionParedes.add(new Position(x = n, y = 25))})
+		(0.. 14).forEach({n => posicionParedes.add(new Position(x = n, y = 0))})
+		(1.. 10).forEach({n => posicionParedes.add(new Position(x = 0, y = n))})
+		(0 .. 14).forEach({n => posicionParedes.add(new Position(x = n, y = 12))})
+		(2 .. 12).forEach({n => posicionParedes.add(new Position(x = 14, y = n))})
 
-		
-		[6, 7, 8, 24, 25, 26].forEach({n => posicionParedes.add(new Position(x = 2, y = n))})
-		(1.. 6).forEach({n => posicionParedes.add(new Position(x = 4, y = n))})
-		(8.. 10).forEach({n => posicionParedes.add(new Position(x = 4, y = n))})
-		(14.. 25).forEach({n => posicionParedes.add(new Position(x = 4, y = n))})
-		[2, 3, 6, 7, 24, 25, 26].forEach({n => posicionParedes.add(new Position(x = 6, y = n))})
-		(10.. 16).forEach({n => posicionParedes.add(new Position(x = 6, y = n))})
-		[1, 2, 5, 6].forEach({n => posicionParedes.add(new Position(x = 8, y = n))})
-		(12.. 18).forEach({n => posicionParedes.add(new Position(x = 8, y = n))})
-		(22.. 25).forEach({n => posicionParedes.add(new Position(x = 8, y = n))})
-		[2, 3, 6, 7].forEach({n => posicionParedes.add(new Position(x = 10, y = n))})
-		(20.. 25).forEach({n => posicionParedes.add(new Position(x = 10, y = n))})
-		(2.. 6).forEach({n => posicionParedes.add(new Position(x = 12, y = n))})
-		(8.. 11).forEach({n => posicionParedes.add(new Position(x = 12, y = n))})
-		(18.. 22).forEach({n => posicionParedes.add(new Position(x = 12, y = n))})
-		(5.. 8).forEach({n => posicionParedes.add(new Position(x = 14, y = n))})
-		(16.. 20).forEach({n => posicionParedes.add(new Position(x = 14, y = n))})
-		[2, 3, 6, 7, 8, 11, 12, 13].forEach({n => posicionParedes.add(new Position(x = 16, y = n))})
-		(20.. 24).forEach({n => posicionParedes.add(new Position(x = 16, y = n))})
-		[1, 2, 5, 6, 8, 9].forEach({n => posicionParedes.add(new Position(x = 18, y = n))})
-		(18.. 23).forEach({n => posicionParedes.add(new Position(x = 18, y = n))})
-		[2, 3, 7, 8].forEach({n => posicionParedes.add(new Position(x = 20, y = n))})
-		(11.. 18).forEach({n => posicionParedes.add(new Position(x = 20, y = n))})
-		(22.. 26).forEach({n => posicionParedes.add(new Position(x = 20, y = n))})
-		[1, 2, 8, 9, 10, 19, 20, 25].forEach({n => posicionParedes.add(new Position(x = 22, y = n))})
-		(2.. 16).forEach({n => posicionParedes.add(new Position(x = 24, y = n))})
-		[20, 21, 22, 26].forEach({n => posicionParedes.add(new Position(x = 24, y = n))})
-		(14.. 25).forEach({n => posicionParedes.add(new Position(x = 26, y = n))})	
+		(2.. 8).forEach({n => posicionParedes.add(new Position(x = n, y = 3))})
+		[10, 11].forEach({n => posicionParedes.add(new Position(x = n, y = 3))})
+		[1, 2].forEach({n => posicionParedes.add(new Position(x = n, y = 5))})
+		(6.. 10).forEach({n => posicionParedes.add(new Position(x = n, y = 5))})
+		(2.. 8).forEach({n => posicionParedes.add(new Position(x = n, y = 7))})
+		[12, 13].forEach({n => posicionParedes.add(new Position(x = n, y = 7))})
+		(11.. 13).forEach({n => posicionParedes.add(new Position(x = n, y = 9))})
+
+		(9.. 11).forEach({n => posicionParedes.add(new Position(x = 2, y = n))})
+		(2.. 10).forEach({n => posicionParedes.add(new Position(x = 4, y = n))})
+		(9.. 11).forEach({n => posicionParedes.add(new Position(x = 6, y = n))})
+		[0, 1].forEach({n => posicionParedes.add(new Position(x = 6, y = n))})
+		(8.. 10).forEach({n => posicionParedes.add(new Position(x = 8, y = n))})
+		(6.. 10).forEach({n => posicionParedes.add(new Position(x = 10, y = n))})
+		(3.. 7).forEach({n => posicionParedes.add(new Position(x = 12, y = n))})
 
 
-		posicionParedes.addAll([
-			new Position(x = 0, y = 27), new Position(x = 12, y = 26), 
-			new Position(x = 14, y = 1)])
+		posicionParedes.addAll([new Position(x = 1, y = 1), new Position(x = 6, y = 1),
+		new Position(x = 8, y = 2), new Position(x = 12, y = 2), new Position(x = 12, y = 11)])
 		
 		
 		posicionParedes.forEach({p => 
@@ -496,8 +449,8 @@ object nivel2 {
 
 	method generarLlave() {
 
-		const llaves = [new Position(x = 13, y = 1), new Position(x = 1, y = 11), 
-		new Position(x = 21, y = 25)].map({p => self.dibujar(new Llave(position = p))})
+		const llaves = [new Position(x = 13, y = 8), new Position(x = 5, y = 2), 
+		new Position(x = 9, y = 11)].map({p => self.dibujar(new Llave(position = p))})
 	}
 
 	method generarFantasmas() {
@@ -519,52 +472,33 @@ object nivel2 {
 	}
 
 	method generarPuntosRelojP() {
-		[5, 19].forEach({n => posicionesRelojP.add(new Position(x = 1, y = n))})
-		[5, 11].forEach({n => posicionesRelojP.add(new Position(x = 7, y = n))})
-		[1, 13, 24].forEach({n => posicionesRelojP.add(new Position(x = 15, y = n))})
-		[11, 21].forEach({n => posicionesRelojP.add(new Position(x = 19, y = n))})
+		[4, 7].forEach({n => posicionesRelojP.add(new Position(x = 1, y = n))})
+		[5, 9].forEach({n => posicionesRelojP.add(new Position(x = 5, y = n))})
+		[1, 6, 11].forEach({n => posicionesRelojP.add(new Position(x = 7, y = n))})
+		[6, 10].forEach({n => posicionesRelojP.add(new Position(x = 13, y = n))})
 
-		posicionesRelojP.add(new Position(x = 22, y = 11))
+		posicionesRelojP.addAll([new Position(x = 11, y = 7), new Position(x = 9, y = 4)])
 
 		posicionesRelojP.forEach({posicionesRelojP => self.dibujar(new PuntosRelojPos(position = posicionesRelojP))})
 	}
 
 	method generarPuntosRelojN() {
-		posicionesRelojN.addAll([new Position(x = 4, y = 26), new Position(x = 5, y = 11),
-		new Position(x = 11, y = 5), new Position(x = 14, y = 21), new Position(x = 20, y = 1),
-		new Position(x = 27, y = 23)])
+		posicionesRelojN.addAll([new Position(x = 3, y = 1), new Position(x = 5, y = 11),
+		new Position(x = 11, y = 5), new Position(x = 2, y = 6), new Position(x = 3, y = 9),
+		new Position(x = 7, y = 8), new Position(x = 9, y = 10)])
 
 		posicionesRelojN.forEach({posicionesRelojN => self.dibujar(new PuntosRelojNeg(position = posicionesRelojN))})
 	}
 
 	method generarPuntosP() {
-		[2, 3, 5, 6, 10, 12, 16, 19, 21].forEach({n => posicionesPuntosP.add(new Position(x = n, y = 1))})
-		[7, 9, 17, 25].forEach({n => posicionesPuntosP.add(new Position(x = n, y = 2))})
-		[2, 5, 8, 13, 15, 17, 21, 25, 26].forEach({n => posicionesPuntosP.add(new Position(x = n, y = 3))})
-		[3, 11, 19, 27].forEach({n => posicionesPuntosP.add(new Position(x = n, y = 4))})
-		[2, 5, 10, 13, 15, 17, 19, 25, 27].forEach({n => posicionesPuntosP.add(new Position(x = n, y = 5))})
-		(21.. 23).forEach({n => posicionesPuntosP.add(new Position(x = n, y = 5))})
-		[7, 11, 15, 17].forEach({n => posicionesPuntosP.add(new Position(x = n, y = 6))})
-		[3, 5, 8, 12, 15, 18, 19, 21, 23, 25, 26].forEach({n => posicionesPuntosP.add(new Position(x = n, y = 7))})
-		[1, 13, 19].forEach({n => posicionesPuntosP.add(new Position(x = n, y = 8))})
-		[3, 7, 9, 10, 14, 15, 17, 21, 23, 26, 27].forEach({n => posicionesPuntosP.add(new Position(x = n, y = 9))})
-		[5, 23].forEach({n => posicionesPuntosP.add(new Position(x = n, y = 10))})
-		[3, 14, 17, 18, 21, 25, 27].forEach({n => posicionesPuntosP.add(new Position(x = n, y = 11))})
-		[7, 17, 21, 27].forEach({n => posicionesPuntosP.add(new Position(x = n, y = 12))})
-		[2, 4, 10, 12, 14, 17, 18, 22, 23, 26].forEach({n => posicionesPuntosP.add(new Position(x = n, y = 13))})
-		[1, 7, 9, 25, 27].forEach({n => posicionesPuntosP.add(new Position(x = n, y = 14))})
-		[2, 5, 9, 13, 22, 27].forEach({n => posicionesPuntosP.add(new Position(x = n, y = 15))})
-		[3, 7, 15, 21, 25].forEach({n => posicionesPuntosP.add(new Position(x = n, y = 16))})
-		[2, 5, 9, 11, 15, 17, 22, 24, 27].forEach({n => posicionesPuntosP.add(new Position(x = n, y = 17))})
-		[1, 9, 13, 19, 27].forEach({n => posicionesPuntosP.add(new Position(x = n, y = 18))})
-		[3, 5, 7, 15, 17, 20, 23].forEach({n => posicionesPuntosP.add(new Position(x = n, y = 19))})
-		[5, 13, 21, 23, 25].forEach({n => posicionesPuntosP.add(new Position(x = n, y = 20))})
-		[2, 7, 9, 13, 15, 17, 20, 22, 27].forEach({n => posicionesPuntosP.add(new Position(x = n, y = 21))})
-		[19, 25].forEach({n => posicionesPuntosP.add(new Position(x = n, y = 22))})
-		[2, 9, 13, 14, 15, 17, 21, 22, 24].forEach({n => posicionesPuntosP.add(new Position(x = n, y = 23))})
-		[3, 18, 27].forEach({n => posicionesPuntosP.add(new Position(x = n, y = 24))})
-		[5, 7, 11, 13, 23, 24].forEach({n => posicionesPuntosP.add(new Position(x = n, y = 25))})
-		[1, 3, 5, 7, 8, 9, 13, 15, 17, 19, 21, 25, 27].forEach({n => posicionesPuntosP.add(new Position(x = n, y = 26))})
+		[2, 3, 6, 10].forEach({n => posicionesPuntosP.add(new Position(x = 1, y = n))})
+		[1, 4, 8].forEach({n => posicionesPuntosP.add(new Position(x = 2, y = n))})
+		[2, 4, 11].forEach({n => posicionesPuntosP.add(new Position(x = 3, y = n))})
+		[1, 4, 6, 10].forEach({n => posicionesPuntosP.add(new Position(x = 5, y = n))})
+		[2, 4, 9, 10].forEach({n => posicionesPuntosP.add(new Position(x = 7, y = n))})
+		[1, 2, 6, 8].forEach({n => posicionesPuntosP.add(new Position(x = 9, y = n))})
+		[1, 10].forEach({n => posicionesPuntosP.add(new Position(x = 11, y = n))})
+		[3, 5, 11].forEach({n => posicionesPuntosP.add(new Position(x = 13, y = n))})
 
 
 		posicionesPuntosP.forEach({posicionesPuntosP => self.dibujar(new PuntosPersonajePos(position = posicionesPuntosP))})
@@ -572,20 +506,12 @@ object nivel2 {
 
 
 	method generarPuntosN() {
-		posicionesPuntosN.addAll([new Position(x = 11, y = 1), new Position(x = 9, y = 7),
-		new Position(x = 1, y = 22), new Position(x = 27, y = 25), new Position(x = 27, y = 20)])
-		[1, 19].forEach({n => posicionesPuntosN.add(new Position(x = n, y = 3))})
-		[1, 5, 16, 20, 25].forEach({n => posicionesPuntosN.add(new Position(x = n, y = 9))})
-		[10, 13].forEach({n => posicionesPuntosN.add(new Position(x = n, y = 11))})
-		[1, 5, 27].forEach({n => posicionesPuntosN.add(new Position(x = n, y = 13))})
-		[12, 23].forEach({n => posicionesPuntosN.add(new Position(x = n, y = 15))})
-		[6, 10, 19, 25].forEach({n => posicionesPuntosN.add(new Position(x = n, y = 17))})
-		[2, 16, 25].forEach({n => posicionesPuntosN.add(new Position(x = n, y = 19))})
-		[3, 5].forEach({n => posicionesPuntosN.add(new Position(x = n, y = 21))})
-		[3, 5].forEach({n => posicionesPuntosN.add(new Position(x = n, y = 21))})
-		[6, 12].forEach({n => posicionesPuntosN.add(new Position(x = n, y = 23))})
-		[1, 19].forEach({n => posicionesPuntosN.add(new Position(x = n, y = 24))})
-		[10, 16, 22].forEach({n => posicionesPuntosN.add(new Position(x = n, y = 26))})
+		posicionesPuntosN.addAll([new Position(x = 2, y = 2), new Position(x = 3, y = 6),
+		new Position(x = 5, y = 8), new Position(x = 12, y = 8)])
+
+		[8, 9].forEach({n => posicionesPuntosN.add(new Position(x = 1, y = n))})
+		[2, 8].forEach({n => posicionesPuntosN.add(new Position(x = 6, y = n))})
+		[2, 11].forEach({n => posicionesPuntosN.add(new Position(x = 10, y = n))})
 
 		posicionesPuntosN.forEach({posicionesPuntosN => self.dibujar(new PuntosPersonajeNeg(position = posicionesPuntosN))})
 	}
