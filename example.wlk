@@ -4,7 +4,7 @@ import elementos.*
 
 
 object personaje {
-  var property position = game.at(0, 23)
+  var property position = game.origin()
   const vida1 = new Elementos(position = game.at(10, 26), image = "corazon.png") //hacer clase? aunque no tienen un comportamiento propio...
   const vida2 = new Elementos(position = game.at(11, 26), image = "corazon.png")
   const vida3 = new Elementos(position = game.at(12, 26), image = "corazon.png")
@@ -36,16 +36,6 @@ object personaje {
       visualesVidas.remove(visualesVidas.last())
     }
     vidas = 0.max(vidas - 1) //o adentro del if sin el 0.max
-  }
-
-  method ganarVida() { // no se usa
-    vidas = 3.min(vidas + 1)
-    if(vidas == 2)
-      vida3.aparecer()
-    else if(vidas == 1) {
-      vida2.aparecer()
-      vida3.aparecer()
-    }
   }
 
 

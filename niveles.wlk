@@ -17,6 +17,7 @@ object nivel1 {
 	const posicionesPuntosP = []
 	const posicionesPuntosN = []
 	const inicioPersonaje = game.at(0, 23)
+	const inicioPuerta = game.at(24, 1)
 
 
     method iniciar() {
@@ -25,10 +26,14 @@ object nivel1 {
         game.cellSize(63)
 
         game.boardGround("fondotierra.jpg")
+		//fondo.configurar("fondotierra.jpg")
 
 		self.generarParedes()
 
+		personaje.position(inicioPersonaje)
         personaje.iniciar()
+
+		puerta.position(inicioPuerta)
 		puerta.aparecer()
 
 		game.onCollideDo(personaje, {algo => algo.teAgarraron()})
@@ -51,7 +56,7 @@ object nivel1 {
 				personaje.moveteADerecha(self.posicionesParedes(paredes)) //??????
 		})
 		keyboard.left().onPressDo({
-			if(not  self.hayVisual(visuales))
+			if(not self.hayVisual(visuales))
 				personaje.moveteAIzquierda(self.posicionesParedes(paredes)) //??????
 		})
 		keyboard.up().onPressDo({
@@ -272,8 +277,14 @@ object nivel1 {
 		personaje.reiniciarPuntos()
 		personaje.reiniciarLlaves()
 		reloj.reiniciarTiempo()
+		self.limpiarParedes()
 		self.iniciar()
 	}
+
+	method limpiarParedes() {
+		//paredes.forEach({p => game.removeVisual(p)}) //funciona sin este, pero es mejor dejarlo o sacarlo?
+		posicionParedes.removeAll(posicionParedes)
+	}//limpiar puntos???
 }
 
 
@@ -293,7 +304,14 @@ object nivel2 {
 	const posicionesRelojN = []
 	const posicionesPuntosP = []
 	const posicionesPuntosN = []
-	const inicioPersonaje = game.at(28, 1)
+	const inicioPersonaje = game.at(0, 26)
+	const inicioPuerta = game.at(28, 1)
+	const fantasma1 = new Enemigo(position = game.at(11, 23))
+	const fantasma2 = new Enemigo(position = game.at(19, 13))
+	const fantasma3 = new Enemigo(position = game.at(27, 1))
+	const enemigos = [fantasma1, fantasma2, fantasma3] //es de prueba, si sirve, se deja
+
+
 
     method iniciar() {
 		
@@ -302,14 +320,18 @@ object nivel2 {
         game.cellSize(63)
 
         game.boardGround("fondotierra2.jpg")
+		//fondo.configurar("fondotierra2.jpg")
 
 		self.generarParedes()
 
 		personaje.visualesVidas().forEach({v => v.position(game.at(v.position().x(), 28))})
-		personaje.position(game.at(0, 26))
+		personaje.position(inicioPersonaje)
         personaje.iniciar()
 
-		puerta.position(game.at(28, 1))
+		self.generarFantasmas()
+		self.visibilidadFantasmas()
+
+		puerta.position(inicioPuerta)
 		puerta.aparecer()
 
 		game.onCollideDo(personaje, {algo => algo.teAgarraron()})
@@ -478,6 +500,17 @@ object nivel2 {
 		new Position(x = 21, y = 25)].map({p => self.dibujar(new Llave(position = p))})
 	}
 
+	method generarFantasmas() {
+		enemigos.forEach({f => f.aparecer()})
+		// fantasma1.aparecer()
+		// fantasma2.aparecer()
+		// fantasma3.aparecer()
+	}
+
+	method visibilidadFantasmas() {
+		enemigos.forEach({f => f.iniciarParpadeo()})
+	}
+
 	method generarPuntos() {
 		self.generarPuntosRelojP()
 		self.generarPuntosRelojN()
@@ -564,6 +597,7 @@ object nivel2 {
 			ganaste.aparecer() //ver
 		}	
 		else if(self.noGano()) {
+			game.clear()
 			perdiste.aparecer()
 			reloj.pararTiempo()
 		} //ver
@@ -584,6 +618,12 @@ object nivel2 {
 		personaje.reiniciarLlaves()
 		//personaje.reiniciarVidas() //no funciona....
 		reloj.reiniciarTiempo()
+		self.limpiarParedes()
 		self.iniciar()
 	} //ver
+
+	method limpiarParedes() {
+		//paredes.forEach({p => game.removeVisual(p)}) //funciona sin este, pero es mejor dejarlo o sacarlo?
+		posicionParedes.removeAll(posicionParedes)
+	} //limpiar puntos???
 }

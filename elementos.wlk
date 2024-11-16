@@ -18,6 +18,16 @@ class Elementos {
     }
 }
 
+object fondo { //ver bien
+  method position() = game.origin()
+  var image = ""
+
+  method configurar(nuevaImagen) {
+    image = nuevaImagen
+    game.addVisual(self)
+  }
+}
+
 object reloj {
     var segundosRestantes = 180  // 3 minutos en segundos
     var property image = "3_00.png"  // Imagen inicial (3:00)
@@ -72,7 +82,7 @@ object reloj {
 }
 
 object puerta {
-    var property position = game.at(24, 1)
+    var property position = game.origin()
     method image() = "puerta.png"
 
     method teAgarraron() { 
@@ -80,6 +90,7 @@ object puerta {
             game.removeVisual(self)
             personaje.usarLlaves()
             personaje.reiniciarPuntos()
+            personaje.reiniciarLlaves() //reiniciar vidas??
             reloj.pararTiempo()
             game.removeVisual(personaje)
         }
@@ -164,7 +175,7 @@ class Enemigo inherits Elementos(image = "fantasma.png") {
     var seVe = true
     // Método para iniciar el parpadeo del enemigo cada 3 segundos
     method iniciarParpadeo() {
-        game.onTick(3000, "parpadeoFantasma_" , {
+        game.onTick(3000, "parpadeoFantasma" , {
             // Alternar visibilidad del enemigo
             if (seVe) {
                 seVe=false
