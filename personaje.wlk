@@ -67,7 +67,7 @@ object personaje {
   }
 
   method puedePasar() {
-        return self.llaves().size() == 3 && self.puntos() >= 10500
+        return self.llaves().size() == 3 && self.puntos() >= 8500
   }
   
   method image() = "personaje.png" //que cambie cuando cambia de direccion?
