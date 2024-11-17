@@ -18,15 +18,6 @@ class Elementos {
     }
 }
 
-object fondo { //ver bien
-  method position() = game.origin()
-  var image = ""
-
-  method configurar(nuevaImagen) {
-    image = nuevaImagen
-    game.addVisual(self)
-  }
-}
 
 object reloj {
     var segundosRestantes = 180  // 3 minutos en segundos

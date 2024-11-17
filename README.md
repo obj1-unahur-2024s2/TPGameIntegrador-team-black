@@ -27,4 +27,4 @@ Enter - continuar con el juego
 
 - Programación con Objetos I - Universidad Nacional de Hurlingham
 - Versión de wollok: 0.2.9 en adelante 
-- Una vez terminado, no tenemos problemas en que el repositorio sea público / queremos manternerlo privado
+- Una vez terminado, no tenemos problemas en que el repositorio sea público
