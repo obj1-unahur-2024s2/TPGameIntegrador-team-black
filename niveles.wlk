@@ -48,7 +48,7 @@ class Nivel {
 		self.configurarTeclas()
 		self.teclaEspecial()
 		
-		self.terminarJuego()
+		self.terminarNivel()
 
     }	
 
@@ -126,7 +126,7 @@ class Nivel {
 	method generarPuntosRelojN()
 	method generarPuntosP()
 	method generarPuntosN()
-	method terminarJuego() {}
+	method terminarNivel() {}
 	method eliminarVisuales(lista) {
 		const activos = lista.filter({v => game.hasVisual(v)})
 		if(self.hayVisual(lista)) 
@@ -239,11 +239,12 @@ object nivel1 inherits Nivel(inicioPersonaje = game.at(0, 11), inicioPuerta = ga
 		posicionesPuntosN.forEach({posicionesPuntosN => self.dibujar(new PuntosPersonajeNeg(position = posicionesPuntosN))})
 	}
 
-	override method terminarJuego() {
+	override method terminarNivel() {
 		if(self.puedeGanar()) {
 			//self.eliminarVisuales(visuales) // Limpia los visuales actuales del nivel1
 			game.clear() // Borra el estado del juego actual
 			nivel2.iniciar() //ver
+			personaje.cambiarNivel()
 		}
 	}
 }
@@ -380,21 +381,20 @@ object nivel2 inherits Nivel(inicioPersonaje = game.at(0, 11), inicioPuerta = ga
 		posicionesPuntosN.forEach({posicionesPuntosN => self.dibujar(new PuntosPersonajeNeg(position = posicionesPuntosN))})
 	}
 
-	/*
-	override method terminarJuego() {
+	
+	override method terminarNivel() {
 		if(self.puedeGanar()) {
 			game.clear() 
-			ganaste.aparecer() //ver
+			game.addVisual(ganaste)
 		}	
-		else if(self.noGano()) {
+		/*
+		if(self.noGano()) {
 			game.clear()
 			reloj.pararTiempo()
 			reloj.reiniciarTiempo()
 			self.eliminarEnemigos()
 			perdiste.aparecer()
-		} //ver
-	}*/
-
-
-	//override method noGano() = super() || not reloj.hayTiempo() //|| not personaje.tieneVida()
+		} 
+		*/
+	}
 }

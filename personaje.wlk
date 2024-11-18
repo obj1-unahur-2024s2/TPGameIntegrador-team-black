@@ -1,3 +1,4 @@
+import niveles.*
 import wollok.game.*
 import paredes.*
 import elementos.*
@@ -10,6 +11,7 @@ object personaje {
   const vida3 = new Elemento(position = game.at(11, 13), image = "corazon.png")
   var vidas = 3
   var puntos = 0
+  var nivelActual = nivel1
   const property llaves = [] 
   const property visualesVidas = [vida1, vida2, vida3]
 
@@ -80,6 +82,11 @@ object personaje {
     const nuevaDireccion = game.at((game.width()-1).min(position.x() + 1), position.y())
     if(not posiciones.contains(nuevaDireccion))
       position = nuevaDireccion
+    nivelActual.terminarJuego()
+  }
+
+  method cambiarNivel() {
+    nivelActual = nivel2
   }
 
   method moveteAIzquierda(posiciones) {
