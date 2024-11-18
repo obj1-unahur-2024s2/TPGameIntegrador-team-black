@@ -7,13 +7,17 @@ class Elemento {
     var property position = game.origin()
 
     method desaparecer() {
-        game.removeVisual(self)
+        if(game.hasVisual(self)){
+            game.removeVisual(self)
+        }
     }
 
     method teAgarraron(){} //?
 
     method aparecer() {
-        game.addVisual(self)
+        if(not(game.hasVisual(self))){
+            game.addVisual(self)
+        }
     }
 }
 
