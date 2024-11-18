@@ -7,17 +7,13 @@ class Elemento {
     var property position = game.origin()
 
     method desaparecer() {
-        if(game.hasVisual(self)) {
-            game.removeVisual(self)
-        }
+        game.removeVisual(self)
     }
 
     method teAgarraron(){} //?
 
     method aparecer() {
-        if(not(game.hasVisual(self))) {
-            game.removeVisual(self)
-        }
+        game.addVisual(self)
     }
 }
 
@@ -169,7 +165,7 @@ class Llave inherits Elemento(image = "llave.png") {
     }
 }
 
-class Enemigo inherits Elemento(image = "fantasma.png") {
+class Enemigo inherits Elemento(image = "fantasmaBlanco.png") {
     var seVe = true
     // Método para iniciar el parpadeo del enemigo cada 3 segundos
     method iniciarParpadeo() {

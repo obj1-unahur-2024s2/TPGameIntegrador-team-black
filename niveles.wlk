@@ -259,7 +259,7 @@ object nivel2 inherits Nivel(inicioPersonaje = game.at(0, 11), inicioPuerta = ga
 
 	
     override method iniciar() {
-       
+        
 		self.iniciarFantasmas()
 
 		reloj.reiniciarTiempo()
