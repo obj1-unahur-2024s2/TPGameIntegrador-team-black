@@ -8,6 +8,7 @@ import niveles.*
 object juego {
     const pantallaPrincipal = new Elemento(image = "inicio.jpg")
     const perdiste = new Elemento(image = "perdiste.jpg")
+    const controles = new Elemento(image = "controles.jpg")
     var juegoIniciado = false
 
     method iniciar() {
@@ -26,6 +27,12 @@ object juego {
                 juegoIniciado = true
             }
         })
+
+        keyboard.c().onPressDo({
+			reloj.pararTiempo()
+			reloj.desaparecer()
+			controles.aparecer()
+		})
     }
 
     method gameOver() {

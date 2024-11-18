@@ -6,11 +6,8 @@ import paredes.*
 
 class Nivel {
 	const ganaste = new Elemento(image = "ganaste.jpg")
-	const perdiste = new Elemento(image = "perdiste.jpg")
-	const controles = new Elemento(image = "controles.jpg")
-	const inicio = new Elemento(image = "inicio.jpg")
 	const pausa = new Elemento(image = "pausa.jpg")
-	const visuales = [inicio, controles, ganaste, perdiste, pausa]
+	var estaEnPlay = true
 	const posicionParedes = []
 	const posicionesRelojP = []
 	const posicionesRelojN = []
@@ -35,7 +32,7 @@ class Nivel {
         personaje.iniciar()
 
 		game.onCollideDo(personaje, {algo => algo.teAgarraron()})
-		reloj.iniciar() //que inicie cuando desaparece el inicio
+		reloj.iniciar() 
 
 		self.generarLlave()
 		self.generarPuntos()
@@ -45,42 +42,38 @@ class Nivel {
 
 	method configurarTeclas() {
 		keyboard.right().onPressDo({
-			if(not self.hayVisual(visuales))
+			if(estaEnPlay)
 				personaje.moveteADerecha(posicionParedes) 
 		})
 		keyboard.left().onPressDo({
-			if(not self.hayVisual(visuales))
+			if(estaEnPlay)
 				personaje.moveteAIzquierda(posicionParedes)
 		})
 		keyboard.up().onPressDo({
-			if(not self.hayVisual(visuales))
+			if(estaEnPlay)
 				personaje.moveteArriba(posicionParedes)
 		})
 		keyboard.down().onPressDo({
-			if(not self.hayVisual(visuales))
+			if(estaEnPlay)
 				personaje.moveteAbajo(posicionParedes)
 		})
 
 		keyboard.enter().onPressDo({
-			self.eliminarVisuales(visuales)
-			self.iniciarFantasmas() //tira mensaje por consola
-			reloj.iniciar()
+			if(not estaEnPlay) {
+				game.removeVisual(pausa)
+				self.iniciarFantasmas()
+				reloj.iniciar()
+				estaEnPlay = true
+			}
+			
 		})
 
 		keyboard.p().onPressDo({
-				self.eliminarVisuales(visuales)
 				reloj.pararTiempo() 
 				reloj.desaparecer()
 				self.eliminarEnemigos()
 				pausa.aparecer() 
-		})
-
-		keyboard.c().onPressDo({
-			self.eliminarVisuales(visuales)
-			reloj.pararTiempo()
-			reloj.desaparecer()
-			self.eliminarEnemigos()
-			controles.aparecer()
+				estaEnPlay = false
 		})
 
 		keyboard.r().onPressDo({
@@ -102,20 +95,8 @@ class Nivel {
 	method generarPuntosP()
 	method generarPuntosN()
 	method terminarNivel() {}
-	method eliminarVisuales(lista) {
-		const activos = lista.filter({v => game.hasVisual(v)})
-		if(self.hayVisual(lista)) 
-				activos.forEach({v => game.removeVisual(v)})
-	}
-	method hayVisual(lista) = lista.any({v => game.hasVisual(v)})
-
-	method dibujar(dibujo) {
-		game.addVisual(dibujo)
-	}
 
 	method puedeGanar() = personaje.puedePasar() && personaje.position() == puerta.position() && reloj.hayTiempo()
-
-	method noGano() = not reloj.hayTiempo()
 
 	method limpiarParedes() {
 		posicionParedes.removeAll(posicionParedes)
@@ -166,12 +147,12 @@ object nivel1 inherits Nivel(inicioPersonaje = game.at(0, 11), inicioPuerta = ga
 			new Position(x = 4, y = 7), new Position(x = 10, y = 9)
 		])
 		
-		posicionParedes.forEach({p => self.dibujar(new Paredes(position = p))})
+		posicionParedes.forEach({p => game.addVisual(new Paredes(position = p))})
 	}
 	
 	override method generarLlave() {
 		const llaves = [new Position(x = 1, y = 1), new Position(x = 11, y = 11), 
-		new Position(x = 5, y = 4)].forEach({p => self.dibujar(new Llave(position = p))})
+		new Position(x = 5, y = 4)].forEach({p => game.addVisual(new Llave(position = p))})
 	}
 
 
@@ -182,7 +163,7 @@ object nivel1 inherits Nivel(inicioPersonaje = game.at(0, 11), inicioPuerta = ga
 		[6, 10].forEach({n => posicionesRelojP.add(new Position(x = 13, y = n))})
 		posicionesRelojP.addAll([new Position(x = 11, y = 7), new Position(x = 9, y = 4)])
 
-		posicionesRelojP.forEach({posicionesRelojP => self.dibujar(new PuntosRelojPos(position = posicionesRelojP))})
+		posicionesRelojP.forEach({posicionesRelojP => game.addVisual(new PuntosRelojPos(position = posicionesRelojP))})
 	}
 
 	override method generarPuntosRelojN() {
@@ -190,7 +171,7 @@ object nivel1 inherits Nivel(inicioPersonaje = game.at(0, 11), inicioPuerta = ga
 		new Position(x = 11, y = 5), new Position(x = 3, y = 9),
 		new Position(x = 7, y = 8), new Position(x = 9, y = 10)])
 
-		posicionesRelojN.forEach({posicionesRelojN => self.dibujar(new PuntosRelojNeg(position = posicionesRelojN))})
+		posicionesRelojN.forEach({posicionesRelojN => game.addVisual(new PuntosRelojNeg(position = posicionesRelojN))})
 	}
 
 	override method generarPuntosP() {
@@ -203,7 +184,7 @@ object nivel1 inherits Nivel(inicioPersonaje = game.at(0, 11), inicioPuerta = ga
 
 		posicionesPuntosP.addAll([new Position(x = 2, y = 10), new Position(x = 5, y = 10)])
 
-		posicionesPuntosP.forEach({posicionesPuntosP => self.dibujar(new PuntosPersonajePos(position = posicionesPuntosP))})
+		posicionesPuntosP.forEach({posicionesPuntosP => game.addVisual(new PuntosPersonajePos(position = posicionesPuntosP))})
 	}
 
 	override method generarPuntosN() {
@@ -211,7 +192,7 @@ object nivel1 inherits Nivel(inicioPersonaje = game.at(0, 11), inicioPuerta = ga
 		[8, 9].forEach({n => posicionesPuntosN.add(new Position(x = 1, y = n))})
 		[3, 11].forEach({n => posicionesPuntosN.add(new Position(x = 6, y = n))})
 		[2, 11].forEach({n => posicionesPuntosN.add(new Position(x = 10, y = n))})
-		posicionesPuntosN.forEach({posicionesPuntosN => self.dibujar(new PuntosPersonajeNeg(position = posicionesPuntosN))})
+		posicionesPuntosN.forEach({posicionesPuntosN => game.addVisual(new PuntosPersonajeNeg(position = posicionesPuntosN))})
 	}
 
 	override method terminarNivel() {
@@ -264,13 +245,13 @@ object nivel2 inherits Nivel(inicioPersonaje = game.at(0, 11), inicioPuerta = ga
 		posicionParedes.addAll([new Position(x = 1, y = 1), new Position(x = 6, y = 1),
 		new Position(x = 8, y = 2), new Position(x = 12, y = 2), new Position(x = 12, y = 11)])
 		
-		posicionParedes.forEach({p => self.dibujar(new Paredes(position = p))})
+		posicionParedes.forEach({p => game.addVisual(new Paredes(position = p))})
 	}
 
 	override method generarLlave() {
 
 		const llaves = [new Position(x = 13, y = 8), new Position(x = 5, y = 2), 
-		new Position(x = 9, y = 11)].forEach({p => self.dibujar(new Llave(position = p))})
+		new Position(x = 9, y = 11)].forEach({p => game.addVisual(new Llave(position = p))})
 	}
 
 	method generarFantasmas() {
@@ -295,7 +276,7 @@ object nivel2 inherits Nivel(inicioPersonaje = game.at(0, 11), inicioPuerta = ga
 
 		posicionesRelojP.addAll([new Position(x = 11, y = 7), new Position(x = 9, y = 4)])
 
-		posicionesRelojP.forEach({posicionesRelojP => self.dibujar(new PuntosRelojPos(position = posicionesRelojP))})
+		posicionesRelojP.forEach({posicionesRelojP => game.addVisual(new PuntosRelojPos(position = posicionesRelojP))})
 	}
 
 	override method generarPuntosRelojN() {
@@ -303,7 +284,7 @@ object nivel2 inherits Nivel(inicioPersonaje = game.at(0, 11), inicioPuerta = ga
 		new Position(x = 11, y = 5), new Position(x = 2, y = 6), new Position(x = 3, y = 9),
 		new Position(x = 7, y = 8), new Position(x = 9, y = 10)])
 
-		posicionesRelojN.forEach({posicionesRelojN => self.dibujar(new PuntosRelojNeg(position = posicionesRelojN))})
+		posicionesRelojN.forEach({posicionesRelojN => game.addVisual(new PuntosRelojNeg(position = posicionesRelojN))})
 	}
 
 	override method generarPuntosP() {
@@ -317,7 +298,7 @@ object nivel2 inherits Nivel(inicioPersonaje = game.at(0, 11), inicioPuerta = ga
 		[3, 5, 11].forEach({n => posicionesPuntosP.add(new Position(x = 13, y = n))})
 
 
-		posicionesPuntosP.forEach({posicionesPuntosP => self.dibujar(new PuntosPersonajePos(position = posicionesPuntosP))})
+		posicionesPuntosP.forEach({posicionesPuntosP => game.addVisual(new PuntosPersonajePos(position = posicionesPuntosP))})
 	}
 
 
@@ -329,7 +310,7 @@ object nivel2 inherits Nivel(inicioPersonaje = game.at(0, 11), inicioPuerta = ga
 		[2, 8].forEach({n => posicionesPuntosN.add(new Position(x = 6, y = n))})
 		[2, 11].forEach({n => posicionesPuntosN.add(new Position(x = 10, y = n))})
 
-		posicionesPuntosN.forEach({posicionesPuntosN => self.dibujar(new PuntosPersonajeNeg(position = posicionesPuntosN))})
+		posicionesPuntosN.forEach({posicionesPuntosN => game.addVisual(new PuntosPersonajeNeg(position = posicionesPuntosN))})
 	}
 
 	
