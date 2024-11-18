@@ -24,7 +24,7 @@ class Elemento {
 
 
 object reloj {
-    var segundosRestantes = 10  
+    var segundosRestantes = 180  
     var property image = "3_00.png"  
     var property position = game.at(4, 13)  
 
