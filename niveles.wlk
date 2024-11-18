@@ -33,11 +33,12 @@ class Nivel {
 
 		self.generarParedes()
 
-		personaje.position(inicioPersonaje)
-        personaje.iniciar()
-
 		puerta.position(inicioPuerta)
 		puerta.aparecer()
+
+
+		personaje.position(inicioPersonaje)
+        personaje.iniciar()
 
 		game.onCollideDo(personaje, {algo => algo.teAgarraron()})
 		reloj.iniciar() //que inicie cuando desaparece el inicio
@@ -48,7 +49,7 @@ class Nivel {
 		self.configurarTeclas()
 		self.teclaEspecial()
 		
-		self.terminarNivel()
+		//self.terminarNivel()
 
     }	
 
@@ -62,20 +63,20 @@ class Nivel {
 
 	method configurarTeclas() {
 		keyboard.right().onPressDo({
-			if(not self.hayVisual(visuales)) //aca o en el metodo de moverse? pq seria una pausa para personaje/s y tiempo
-				personaje.moveteADerecha(posicionParedes) //??????
+			if(not self.hayVisual(visuales))
+				personaje.moveteADerecha(posicionParedes) 
 		})
 		keyboard.left().onPressDo({
 			if(not self.hayVisual(visuales))
-				personaje.moveteAIzquierda(posicionParedes) //??????
+				personaje.moveteAIzquierda(posicionParedes)
 		})
 		keyboard.up().onPressDo({
 			if(not self.hayVisual(visuales))
-				personaje.moveteArriba(posicionParedes) //??????
+				personaje.moveteArriba(posicionParedes)
 		})
 		keyboard.down().onPressDo({
 			if(not self.hayVisual(visuales))
-				personaje.moveteAbajo(posicionParedes) //??????
+				personaje.moveteAbajo(posicionParedes)
 		})
 
 		keyboard.enter().onPressDo({
@@ -144,7 +145,7 @@ class Nivel {
 
 	method limpiarParedes() {
 		posicionParedes.removeAll(posicionParedes)
-	}//limpiar puntos???
+	}
 
 	method eliminarEnemigos() {
 		enemigos.forEach({e => e.desaparecer()})
@@ -241,9 +242,8 @@ object nivel1 inherits Nivel(inicioPersonaje = game.at(0, 11), inicioPuerta = ga
 
 	override method terminarNivel() {
 		if(self.puedeGanar()) {
-			//self.eliminarVisuales(visuales) // Limpia los visuales actuales del nivel1
-			game.clear() // Borra el estado del juego actual
-			nivel2.iniciar() //ver
+			game.clear() 
+			nivel2.iniciar() 
 			personaje.cambiarNivel()
 		}
 	}
@@ -251,13 +251,7 @@ object nivel1 inherits Nivel(inicioPersonaje = game.at(0, 11), inicioPuerta = ga
 
 
 object nivel2 inherits Nivel(inicioPersonaje = game.at(0, 11), inicioPuerta = game.at(14, 1)){
-	// const fantasma1 = new Enemigo(position = game.at(11, 8))
-	// const fantasma2 = new Enemigo(position = game.at(4, 1))
-	// const fantasma3 = new Enemigo(position = game.at(8, 11))
-	// const enemigos = [fantasma1, fantasma2, fantasma3] 
 
-
-	
     override method iniciar() {
         
 		self.iniciarFantasmas()
@@ -270,7 +264,7 @@ object nivel2 inherits Nivel(inicioPersonaje = game.at(0, 11), inicioPuerta = ga
 		super()
     }
 	
-	override method teclaEspecial() {
+/*	override method teclaEspecial() {
 		// Control para finalizar el juego
 		keyboard.f().onPressDo({
 			game.clear() // Limpiar el estado del juego
@@ -285,7 +279,7 @@ object nivel2 inherits Nivel(inicioPersonaje = game.at(0, 11), inicioPuerta = ga
 				perdiste.aparecer() //no permite reiniciar ni nada, se queda ahi
 			}
 		})
-	}
+	}*/
 
 	override method generarParedes() {
 		(0.. 14).forEach({n => posicionParedes.add(new Position(x = n, y = 0))})
@@ -387,14 +381,5 @@ object nivel2 inherits Nivel(inicioPersonaje = game.at(0, 11), inicioPuerta = ga
 			game.clear() 
 			game.addVisual(ganaste)
 		}	
-		/*
-		if(self.noGano()) {
-			game.clear()
-			reloj.pararTiempo()
-			reloj.reiniciarTiempo()
-			self.eliminarEnemigos()
-			perdiste.aparecer()
-		} 
-		*/
 	}
 }

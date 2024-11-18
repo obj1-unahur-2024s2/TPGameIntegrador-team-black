@@ -5,7 +5,7 @@ import paredes.*
 import elementos.*
 
 program Laberinto {
-	game.title("nombre del juego")
+	game.title("Escape del cementerio")
 	
 	nivel1.iniciar()
 

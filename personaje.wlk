@@ -67,14 +67,13 @@ object personaje {
       visualesVidas.clear()
       visualesVidas.addAll([vida1, vida2, vida3])
     }
-     // no funciona ???? tira error
   }
 
   method puedePasar() {
         return self.llaves().size() == 3 && self.puntos() >= 8500
   }
   
-  method image() = "personaje.png" //que cambie cuando cambia de direccion?
+  method image() = "personaje.png"
 
   method position() = position
 
@@ -82,7 +81,7 @@ object personaje {
     const nuevaDireccion = game.at((game.width()-1).min(position.x() + 1), position.y())
     if(not posiciones.contains(nuevaDireccion))
       position = nuevaDireccion
-    nivelActual.terminarJuego()
+    nivelActual.terminarNivel()
   }
 
   method cambiarNivel() {

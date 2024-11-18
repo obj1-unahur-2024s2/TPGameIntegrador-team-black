@@ -23,8 +23,8 @@ class Elemento {
 
 
 object reloj {
-    var segundosRestantes = 180  // 3 minutos en segundos
-    var property image = "3_00.png"  // Imagen inicial (3:00)
+    var segundosRestantes = 180  
+    var property image = "3_00.png"  
     var property position = game.at(4, 13)  
 
     method iniciar() {
@@ -49,10 +49,15 @@ object reloj {
     }
 
     method tiempoAgotado() {
-        game.addVisual(new Elemento(image = "perdiste.jpg"))
-        self.pararTiempo()
-        self.reiniciarTiempo()
+        if(self.condicionDerrota()) {
+            game.addVisual(new Elemento(image = "perdiste.jpg"))
+            self.pararTiempo()
+            self.reiniciarTiempo()
+
+        }
     }
+
+    method condicionDerrota() = not self.hayTiempo() || not personaje.tieneVida()
 
     method reiniciarTiempo() {
         segundosRestantes = 180
