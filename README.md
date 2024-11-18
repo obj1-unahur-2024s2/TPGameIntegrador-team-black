@@ -9,11 +9,11 @@
 
 ## Capturas
 
-![nivel1](nivel1.jpg "Primer nivel")
+![nivel1](./assets/nivel1.jpg "Primer nivel")
 
-![ganaste](ganaste.jpg "Visual ganaste")
+![ganaste](./assets/ganaste.jpg "Visual ganaste")
 
-![controles](controles.jpg "Visual controles")
+![controles](./assets/controles.jpg "Visual controles")
 
 ## Reglas de Juego / Instrucciones
 
