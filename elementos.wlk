@@ -1,6 +1,7 @@
 import personaje.*
 import wollok.game.*
 import niveles.*
+import jueguito.*
 
 class Elemento {
     const property image = "" 
@@ -12,7 +13,7 @@ class Elemento {
         }
     }
 
-    method teAgarraron(){} //?
+    method teAgarraron(){}
 
     method aparecer() {
         if(not(game.hasVisual(self))){
@@ -23,7 +24,7 @@ class Elemento {
 
 
 object reloj {
-    var segundosRestantes = 180  
+    var segundosRestantes = 10  
     var property image = "3_00.png"  
     var property position = game.at(4, 13)  
 
@@ -35,7 +36,7 @@ object reloj {
                 self.restarTiempo(1)
                 self.actualizarVisual()
             } else {
-                self.tiempoAgotado()
+                juego.gameOver()
             }
         })
     }
@@ -47,17 +48,6 @@ object reloj {
     
         self.image(nombreImagen)
     }
-
-    method tiempoAgotado() {
-        if(self.condicionDerrota()) {
-            game.addVisual(new Elemento(image = "perdiste.jpg"))
-            self.pararTiempo()
-            self.reiniciarTiempo()
-
-        }
-    }
-
-    method condicionDerrota() = not self.hayTiempo() || not personaje.tieneVida()
 
     method reiniciarTiempo() {
         segundosRestantes = 180
@@ -74,7 +64,7 @@ object reloj {
     }
 
     method pararTiempo() {
-      game.removeTickEvent("actualizarReloj")
+        game.removeTickEvent("actualizarReloj")
     }
 
 	method hayTiempo() = segundosRestantes > 0
@@ -93,17 +83,17 @@ object puerta {
             game.removeVisual(self)
             personaje.usarLlaves()
             personaje.reiniciarPuntos()
-            personaje.reiniciarLlaves() //reiniciar vidas??
+            personaje.reiniciarLlaves()
             reloj.pararTiempo()
             game.removeVisual(personaje)
         }
         else
-            game.say(self, "No se puede pasar") //se ve chiquito + a veces habla, a veces no
+            game.say(self, "No se puede pasar")
     }
 
     method aparecer() {
         game.addVisual(self)
-        game.say(self, "Para pasar se necesitan 3 llaves y 8500 puntos") //se ve chiquito + a veces habla, a veces no
+        game.say(self, "Para pasar se necesitan 3 llaves y 8500 puntos")
     }
 }
 
@@ -176,10 +166,8 @@ class Llave inherits Elemento(image = "llave.png") {
 
 class Enemigo inherits Elemento(image = "fantasmaBlanco.png") {
     var seVe = true
-    // Método para iniciar el parpadeo del enemigo cada 3 segundos
     method iniciarParpadeo() {
         game.onTick(3000, "parpadeoFantasma" , {
-            // Alternar visibilidad del enemigo
             if (seVe) {
                 seVe=false
                 self.desaparecer()
@@ -192,7 +180,7 @@ class Enemigo inherits Elemento(image = "fantasmaBlanco.png") {
 
     override method teAgarraron() {
         personaje.perderVida()
-        self.desaparecer() // Desaparece después de afectar al personaje
+        self.desaparecer()
     }
 
     method cortarParpadeo() {

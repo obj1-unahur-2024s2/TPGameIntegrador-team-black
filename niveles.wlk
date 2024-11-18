@@ -41,19 +41,7 @@ class Nivel {
 		self.generarPuntos()
 
 		self.configurarTeclas()
-		self.teclaEspecial()
-		
-		self.terminarNivel()
-
     }	
-
-	method teclaEspecial() {
-		keyboard.f().onPressDo({
-			self.eliminarVisuales(visuales) // Limpia los visuales actuales del nivel1
-			game.clear() // Borra el estado del juego actual
-			nivel2.iniciar() // Inicia el siguiente nivel (nivel2)
-		})
-	}
 
 	method configurarTeclas() {
 		keyboard.right().onPressDo({
@@ -98,16 +86,8 @@ class Nivel {
 		keyboard.r().onPressDo({
 			self.reiniciar()
 		})
-
-		keyboard.i().onPressDo({
-			self.eliminarVisuales(visuales)
-			self.reiniciar()
-			reloj.pararTiempo()
-			reloj.desaparecer()
-			self.eliminarEnemigos()
-			inicio.aparecer()
-		})
 	}
+	
 
 	method generarParedes()
 	method generarLlave()
@@ -169,7 +149,7 @@ object nivel1 inherits Nivel(inicioPersonaje = game.at(0, 11), inicioPuerta = ga
 		(0..14).forEach({n => posicionParedes.add(new Position(x = n, y = 12))}) // Línea inferior
 		(1..10).forEach({n => posicionParedes.add(new Position(x = 0, y = n))})  // Lateral izquierdo
 		(2..12).forEach({n => posicionParedes.add(new Position(x = 14, y = n))}) // Lateral derecho
-   
+        
 		(3..9).forEach({n => posicionParedes.add(new Position(x = n, y = 2))})
 		
 		(7..12).forEach({n => posicionParedes.add(new Position(x = n, y = 6))})
@@ -237,8 +217,8 @@ object nivel1 inherits Nivel(inicioPersonaje = game.at(0, 11), inicioPuerta = ga
 	override method terminarNivel() {
 		if(self.puedeGanar()) {
 			game.clear() 
-			nivel2.iniciar() 
 			personaje.cambiarNivel()
+			nivel2.iniciar() 
 		}
 	}
 }
@@ -257,23 +237,6 @@ object nivel2 inherits Nivel(inicioPersonaje = game.at(0, 11), inicioPuerta = ga
 		
 		super()
     }
-	
-/*	override method teclaEspecial() {
-		// Control para finalizar el juego
-		keyboard.f().onPressDo({
-			game.clear() // Limpiar el estado del juego
-			self.eliminarVisuales(visuales)
-			reloj.pararTiempo() // Detener el reloj
-			reloj.desaparecer()
-
-			// Mostrar mensaje final
-			if(self.puedeGanar()) {
-				ganaste.aparecer() //no permite reiniciar ni nada, se queda ahi
-			} else {
-				perdiste.aparecer() //no permite reiniciar ni nada, se queda ahi
-			}
-		})
-	}*/
 
 	override method generarParedes() {
 		(0.. 14).forEach({n => posicionParedes.add(new Position(x = n, y = 0))})
@@ -376,4 +339,4 @@ object nivel2 inherits Nivel(inicioPersonaje = game.at(0, 11), inicioPuerta = ga
 			game.addVisual(ganaste)
 		}	
 	}
-}
+}				

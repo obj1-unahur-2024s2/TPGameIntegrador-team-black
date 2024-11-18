@@ -2,6 +2,7 @@ import niveles.*
 import wollok.game.*
 import paredes.*
 import elementos.*
+import jueguito.*
 
 
 object personaje {
@@ -33,11 +34,14 @@ object personaje {
   }
 
   method perderVida() {
-    if(vidas > 0) {
+    if(self.tieneVida()) {
+      vidas = vidas - 1
       game.removeVisual(visualesVidas.last())
       visualesVidas.remove(visualesVidas.last())
     }
-    vidas = 0.max(vidas - 1) //o adentro del if sin el 0.max
+    if (not self.tieneVida()){
+      juego.gameOver()
+    }
   }
 
 

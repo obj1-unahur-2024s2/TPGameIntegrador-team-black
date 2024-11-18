@@ -7,6 +7,7 @@ import niveles.*
 
 object juego {
     const pantallaPrincipal = new Elemento(image = "inicio.jpg")
+    const perdiste = new Elemento(image = "perdiste.jpg")
     var juegoIniciado = false
 
     method iniciar() {
@@ -25,6 +26,11 @@ object juego {
                 juegoIniciado = true
             }
         })
+    }
+
+    method gameOver() {
+        game.clear()
+        game.addVisual(perdiste)
     }
 }
 
