@@ -5,9 +5,9 @@ import elementos.*
 
 object personaje {
   var property position = game.origin()
-  const vida1 = new Elementos(position = game.at(9, 13), image = "corazon.png") //hacer clase? aunque no tienen un comportamiento propio...
-  const vida2 = new Elementos(position = game.at(10, 13), image = "corazon.png")
-  const vida3 = new Elementos(position = game.at(11, 13), image = "corazon.png")
+  const vida1 = new Elemento(position = game.at(9, 13), image = "corazon.png")
+  const vida2 = new Elemento(position = game.at(10, 13), image = "corazon.png")
+  const vida3 = new Elemento(position = game.at(11, 13), image = "corazon.png")
   var vidas = 3
   var puntos = 0
   const property llaves = [] 
@@ -43,12 +43,12 @@ object personaje {
 
   method agarrarPuntos(cantidad) {
     puntos = puntos + cantidad
-    game.say(self, "Tengo " + puntos + " !" ) //se ve chiquito + a veces habla, a veces no
+    game.say(self, "Tengo " + puntos + " !" )
   }
 
   method perderPuntos(cantidad) {
     puntos = 0.max(puntos - cantidad)
-    game.say(self, "Tengo " + puntos + " !" ) //se ve chiquito + a veces habla, a veces no
+    game.say(self, "Tengo " + puntos + " !" )
   }
 
   method reiniciarPuntos() {
@@ -60,10 +60,12 @@ object personaje {
   }
 
   method reiniciarVidas() {
-    vidas = 3
-    visualesVidas.clear()
-    visualesVidas.addAll([vida1, vida2, vida3])
-    visualesVidas.forEach({v => v.aparecer()}) // no funciona ???? tira error
+    if(vidas < 3) {
+      vidas = 3
+      visualesVidas.clear()
+      visualesVidas.addAll([vida1, vida2, vida3])
+    }
+     // no funciona ???? tira error
   }
 
   method puedePasar() {

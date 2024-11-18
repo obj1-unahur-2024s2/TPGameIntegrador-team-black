@@ -5,11 +5,12 @@ import paredes.*
 
 
 class Nivel {
-	const ganaste = new Visual(image = "ganaste.jpg")
-	const perdiste = new Visual(image = "perdiste.jpg")
-	const controles = new Visual(image = "controles.jpg")
-	const inicio = new Visual(image = "inicio.jpg")
-	const visuales = [inicio, controles, ganaste, perdiste]
+	const ganaste = new Elemento(image = "ganaste.jpg")
+	const perdiste = new Elemento(image = "perdiste.jpg")
+	const controles = new Elemento(image = "controles.jpg")
+	const inicio = new Elemento(image = "inicio.jpg")
+	const pausa = new Elemento(image = "pausa.jpg")
+	const visuales = [inicio, controles, ganaste, perdiste, pausa]
 	const posicionParedes = []
 	const posicionesRelojP = []
 	const posicionesRelojN = []
@@ -17,6 +18,11 @@ class Nivel {
 	const posicionesPuntosN = []
 	const inicioPersonaje
 	const inicioPuerta
+
+	const fantasma1 = new Enemigo(position = game.at(11, 8))
+	const fantasma2 = new Enemigo(position = game.at(4, 1))
+	const fantasma3 = new Enemigo(position = game.at(8, 11))
+	const enemigos = [fantasma1, fantasma2, fantasma3]
 
 	method iniciar() {
         game.height(15)
@@ -39,15 +45,22 @@ class Nivel {
 		self.generarLlave()
 		self.generarPuntos()
 
-		self.terminarJuego()
+		self.configurarTeclas()
+		self.teclaEspecial()
 		
+		self.terminarJuego()
+
+    }	
+
+	method teclaEspecial() {
 		keyboard.f().onPressDo({
 			self.eliminarVisuales(visuales) // Limpia los visuales actuales del nivel1
 			game.clear() // Borra el estado del juego actual
 			nivel2.iniciar() // Inicia el siguiente nivel (nivel2)
 		})
+	}
 
-
+	method configurarTeclas() {
 		keyboard.right().onPressDo({
 			if(not self.hayVisual(visuales)) //aca o en el metodo de moverse? pq seria una pausa para personaje/s y tiempo
 				personaje.moveteADerecha(posicionParedes) //??????
@@ -67,12 +80,23 @@ class Nivel {
 
 		keyboard.enter().onPressDo({
 			self.eliminarVisuales(visuales)
+			self.iniciarFantasmas() //tira mensaje por consola
 			reloj.iniciar()
+		})
+
+		keyboard.p().onPressDo({
+				self.eliminarVisuales(visuales)
+				reloj.pararTiempo() 
+				reloj.desaparecer()
+				self.eliminarEnemigos()
+				pausa.aparecer() 
 		})
 
 		keyboard.c().onPressDo({
 			self.eliminarVisuales(visuales)
-			reloj.pararTiempo() //no reanuda //sacar??????
+			reloj.pararTiempo()
+			reloj.desaparecer()
+			self.eliminarEnemigos()
 			controles.aparecer()
 		})
 
@@ -84,9 +108,11 @@ class Nivel {
 			self.eliminarVisuales(visuales)
 			self.reiniciar()
 			reloj.pararTiempo()
+			reloj.desaparecer()
+			self.eliminarEnemigos()
 			inicio.aparecer()
 		})
-    }	
+	}
 
 	method generarParedes()
 	method generarLlave()
@@ -120,6 +146,13 @@ class Nivel {
 		posicionParedes.removeAll(posicionParedes)
 	}//limpiar puntos???
 
+	method eliminarEnemigos() {
+		enemigos.forEach({e => e.desaparecer()})
+		enemigos.forEach({e => e.cortarParpadeo()})
+	}
+
+	method iniciarFantasmas() {}
+
 	method reiniciar() {
 		game.clear()
 		personaje.position(inicioPersonaje)
@@ -127,7 +160,7 @@ class Nivel {
 		personaje.reiniciarLlaves()
 		reloj.reiniciarTiempo()
 		self.limpiarParedes()
-		//personaje.reiniciarVidas() //no funciona....
+		personaje.reiniciarVidas()
 		self.iniciar()
 	}
 }
@@ -187,13 +220,13 @@ object nivel1 inherits Nivel(inicioPersonaje = game.at(0, 11), inicioPuerta = ga
 
 	override method generarPuntosP() {
 		[3, 10].forEach({n => posicionesPuntosP.add(new Position(x = 1, y = n))})
-		[10].forEach({n => posicionesPuntosP.add(new Position(x = 2, y = n))})
 		[3, 11].forEach({n => posicionesPuntosP.add(new Position(x = 3, y = n))})
-		[10].forEach({n => posicionesPuntosP.add(new Position(x = 5, y = n))})
 		[3, 5].forEach({n => posicionesPuntosP.add(new Position(x = 7, y = n))})
 		[9, 11].forEach({n => posicionesPuntosP.add(new Position(x = 9, y = n))})
 		[1, 4, 8].forEach({n => posicionesPuntosP.add(new Position(x = 11, y = n))})
 		[3, 5].forEach({n => posicionesPuntosP.add(new Position(x = 13, y = n))})
+
+		posicionesPuntosP.addAll([new Position(x = 2, y = 10), new Position(x = 5, y = 10)])
 
 		posicionesPuntosP.forEach({posicionesPuntosP => self.dibujar(new PuntosPersonajePos(position = posicionesPuntosP))})
 	}
@@ -208,7 +241,7 @@ object nivel1 inherits Nivel(inicioPersonaje = game.at(0, 11), inicioPuerta = ga
 
 	override method terminarJuego() {
 		if(self.puedeGanar()) {
-			self.eliminarVisuales(visuales) // Limpia los visuales actuales del nivel1
+			//self.eliminarVisuales(visuales) // Limpia los visuales actuales del nivel1
 			game.clear() // Borra el estado del juego actual
 			nivel2.iniciar() //ver
 		}
@@ -217,38 +250,41 @@ object nivel1 inherits Nivel(inicioPersonaje = game.at(0, 11), inicioPuerta = ga
 
 
 object nivel2 inherits Nivel(inicioPersonaje = game.at(0, 11), inicioPuerta = game.at(14, 1)){
-	const fantasma1 = new Enemigo(position = game.at(11, 8))
-	const fantasma2 = new Enemigo(position = game.at(4, 1))
-	const fantasma3 = new Enemigo(position = game.at(8, 11))
-	const enemigos = [fantasma1, fantasma2, fantasma3] 
+	// const fantasma1 = new Enemigo(position = game.at(11, 8))
+	// const fantasma2 = new Enemigo(position = game.at(4, 1))
+	// const fantasma3 = new Enemigo(position = game.at(8, 11))
+	// const enemigos = [fantasma1, fantasma2, fantasma3] 
 
 
 	
     override method iniciar() {
        
-		self.generarFantasmas()
-		self.visibilidadFantasmas()
+		self.iniciarFantasmas()
 
 		reloj.reiniciarTiempo()
+
+		personaje.reiniciarPuntos()
+		personaje.reiniciarLlaves()
 		
 		super()
-
+    }
+	
+	override method teclaEspecial() {
 		// Control para finalizar el juego
 		keyboard.f().onPressDo({
 			game.clear() // Limpiar el estado del juego
 			self.eliminarVisuales(visuales)
 			reloj.pararTiempo() // Detener el reloj
+			reloj.desaparecer()
 
 			// Mostrar mensaje final
 			if(self.puedeGanar()) {
-				ganaste.aparecer()
+				ganaste.aparecer() //no permite reiniciar ni nada, se queda ahi
 			} else {
-				perdiste.aparecer()
+				perdiste.aparecer() //no permite reiniciar ni nada, se queda ahi
 			}
 		})
-    }
-	
-
+	}
 
 	override method generarParedes() {
 		(0.. 14).forEach({n => posicionParedes.add(new Position(x = n, y = 0))})
@@ -286,14 +322,19 @@ object nivel2 inherits Nivel(inicioPersonaje = game.at(0, 11), inicioPuerta = ga
 	}
 
 	method generarFantasmas() {
-		enemigos.forEach({f => f.aparecer()})
+		enemigos.forEach({e => e.aparecer()})
 	}
 
 	method visibilidadFantasmas() {
-		enemigos.forEach({f => f.iniciarParpadeo()})
+		enemigos.forEach({e => e.iniciarParpadeo()})
 	}
 
-	
+	override method iniciarFantasmas() {
+		self.generarFantasmas()
+		self.visibilidadFantasmas()
+	}
+
+
 	override method generarPuntosRelojP() {
 		[4, 7].forEach({n => posicionesRelojP.add(new Position(x = 1, y = n))})
 		[5, 9].forEach({n => posicionesRelojP.add(new Position(x = 5, y = n))})
@@ -339,7 +380,7 @@ object nivel2 inherits Nivel(inicioPersonaje = game.at(0, 11), inicioPuerta = ga
 		posicionesPuntosN.forEach({posicionesPuntosN => self.dibujar(new PuntosPersonajeNeg(position = posicionesPuntosN))})
 	}
 
-/*
+	/*
 	override method terminarJuego() {
 		if(self.puedeGanar()) {
 			game.clear() 
@@ -347,8 +388,10 @@ object nivel2 inherits Nivel(inicioPersonaje = game.at(0, 11), inicioPuerta = ga
 		}	
 		else if(self.noGano()) {
 			game.clear()
-			perdiste.aparecer()
 			reloj.pararTiempo()
+			reloj.reiniciarTiempo()
+			self.eliminarEnemigos()
+			perdiste.aparecer()
 		} //ver
 	}*/
 

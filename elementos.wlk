@@ -2,10 +2,9 @@ import personaje.*
 import wollok.game.*
 import niveles.*
 
-class Elementos {
-    const property ubicaciones = []
+class Elemento {
     const property image = "" 
-    var property position = game.at(0, 0)
+    var property position = game.origin()
 
     method desaparecer() {
         game.removeVisual(self)
@@ -45,10 +44,10 @@ object reloj {
         self.image(nombreImagen)
     }
 
-    method tiempoAgotado() { //ver
-        game.addVisual(new Visual(image = "perdiste.jpg"))
+    method tiempoAgotado() {
+        game.addVisual(new Elemento(image = "perdiste.jpg"))
         self.pararTiempo()
-        self.reiniciarTiempo() //se reinicia aunque no se reinicie el juego, dejar?
+        self.reiniciarTiempo()
     }
 
     method reiniciarTiempo() {
@@ -70,6 +69,10 @@ object reloj {
     }
 
 	method hayTiempo() = segundosRestantes > 0
+
+    method desaparecer() {
+        game.removeVisual(self)
+    }
 }
 
 object puerta {
@@ -91,11 +94,11 @@ object puerta {
 
     method aparecer() {
         game.addVisual(self)
-        game.say(self, "Para pasar se necesitan 3 llaves y 10500 puntos") //se ve chiquito + a veces habla, a veces no
+        game.say(self, "Para pasar se necesitan 3 llaves y 8500 puntos") //se ve chiquito + a veces habla, a veces no
     }
 }
 
-class Puntos inherits Elementos {
+class Puntos inherits Elemento {
     const property valor
 
     method sumar(unValor)
@@ -155,14 +158,14 @@ class PuntosPersonajeNeg inherits Puntos(image = "puntos-neg.png", valor = 500) 
     }
 }
 
-class Llave inherits Elementos(image = "llave.png") {
+class Llave inherits Elemento(image = "llave.png") {
     override method teAgarraron() {
         personaje.agarrarLlave(self)
         self.desaparecer()
     }
 }
 
-class Enemigo inherits Elementos(image = "fantasma.png") {
+class Enemigo inherits Elemento(image = "fantasma.png") {
     var seVe = true
     // Método para iniciar el parpadeo del enemigo cada 3 segundos
     method iniciarParpadeo() {
@@ -182,18 +185,12 @@ class Enemigo inherits Elementos(image = "fantasma.png") {
         personaje.perderVida()
         self.desaparecer() // Desaparece después de afectar al personaje
     }
+
+    method cortarParpadeo() {
+        self.desaparecer()
+        seVe = false
+        game.removeTickEvent("parpadeoFantasma")
+    }
+    
 }
 
-class Visual {
-    const property image = ""
-
-    method position() = game.origin()
-
-    method desaparecer() {
-        game.removeVisual(self)
-    }
-
-    method aparecer() {
-        game.addVisual(self)
-    }
-}
