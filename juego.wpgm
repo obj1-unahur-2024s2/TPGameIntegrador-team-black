@@ -3,11 +3,12 @@ import personaje.*
 import niveles.*
 import paredes.*
 import elementos.*
+import jueguito.*
 
 program Laberinto {
 	game.title("Escape del cementerio")
 	
-	nivel1.iniciar()
+	juego.iniciar()
 
 	game.start()
 }

@@ -25,17 +25,11 @@ class Nivel {
 	const enemigos = [fantasma1, fantasma2, fantasma3]
 
 	method iniciar() {
-        game.height(15)
-	    game.width(15)
-        game.cellSize(63)
-
-        game.boardGround("fondo.jpg")
-
+        
 		self.generarParedes()
 
 		puerta.position(inicioPuerta)
 		puerta.aparecer()
-
 
 		personaje.position(inicioPersonaje)
         personaje.iniciar()
@@ -49,7 +43,7 @@ class Nivel {
 		self.configurarTeclas()
 		self.teclaEspecial()
 		
-		//self.terminarNivel()
+		self.terminarNivel()
 
     }	
 
@@ -102,7 +96,7 @@ class Nivel {
 		})
 
 		keyboard.r().onPressDo({
-			self.reiniciar() //ver como reiniciar (o si no se reinicia) //como seria reiniciar para el nivel 2? se pisarian? VER
+			self.reiniciar()
 		})
 
 		keyboard.i().onPressDo({
