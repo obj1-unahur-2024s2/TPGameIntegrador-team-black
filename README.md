@@ -4,7 +4,6 @@
 
 - Carla Porta Baldonedo
 - Candela Chiara Staccia
-- Marcos Dieguez
 - Juan Cruz Poggio
 
 ## Capturas
