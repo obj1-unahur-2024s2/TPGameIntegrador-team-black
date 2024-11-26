@@ -26,7 +26,7 @@ class Elemento {
 object reloj {
     var segundosRestantes = 180  
     var property image = "3_00.png"  
-    var property position = game.at(4, 13)  
+    var property position = game.at(2, 13)  
 
     method iniciar() {
         game.addVisual(self)
@@ -81,9 +81,6 @@ object puerta {
     method teAgarraron() { 
         if(personaje.puedePasar()) {
             game.removeVisual(self)
-            personaje.usarLlaves()
-            personaje.reiniciarPuntos()
-            personaje.reiniciarLlaves()
             reloj.pararTiempo()
             game.removeVisual(personaje)
         }

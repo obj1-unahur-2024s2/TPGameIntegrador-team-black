@@ -107,6 +107,13 @@ class Nivel {
 		enemigos.forEach({e => e.cortarParpadeo()})
 	}
 
+	method eliminarPuntos() {
+		posicionesRelojP.clear()
+		posicionesRelojN.clear()
+		posicionesPuntosP.clear()
+		posicionesPuntosN.clear()
+	}
+
 	method iniciarFantasmas() {}
 
 	method reiniciar() {
@@ -116,7 +123,9 @@ class Nivel {
 		personaje.reiniciarLlaves()
 		reloj.reiniciarTiempo()
 		self.limpiarParedes()
+		self.eliminarPuntos()
 		personaje.reiniciarVidas()
+		personaje.image("personajeD.png")
 		self.iniciar()
 	}
 }

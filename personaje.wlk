@@ -7,14 +7,16 @@ import jueguito.*
 
 object personaje {
   var property position = game.origin()
-  const vida1 = new Elemento(position = game.at(9, 13), image = "corazon.png")
-  const vida2 = new Elemento(position = game.at(10, 13), image = "corazon.png")
-  const vida3 = new Elemento(position = game.at(11, 13), image = "corazon.png")
+  const vida1 = new Elemento(position = game.at(6, 13), image = "corazon.png")
+  const vida2 = new Elemento(position = game.at(7, 13), image = "corazon.png")
+  const vida3 = new Elemento(position = game.at(8, 13), image = "corazon.png")
   var vidas = 3
   var puntos = 0
   var nivelActual = nivel1
   const property llaves = [] 
   const property visualesVidas = [vida1, vida2, vida3]
+  var property image = "personajeD.png"
+  const property llavesVisual = []
 
   method iniciar() {
     game.addVisual(self)
@@ -27,10 +29,24 @@ object personaje {
 
   method agarrarLlave(unaLlave) {
     llaves.add(unaLlave)
+    self.mostrarLlave(unaLlave, llaves.size())
   }
 
-  method usarLlaves() {
+  method mostrarLlave(unaLlave, unaPosicion) {
+    const ejeX = 10
+    const llave = new Llave(position = game.at((ejeX + (unaPosicion - 1)), 13))
+
+    llavesVisual.add(llave)
+    game.addVisual(llave)
+  }
+
+  method reiniciarLlaves() {
     llaves.clear()
+    self.eliminarLlaves()
+  }
+
+  method eliminarLlaves() {
+    llavesVisual.forEach({l => game.removeVisual(l)})
   }
 
   method perderVida() {
@@ -61,10 +77,6 @@ object personaje {
     puntos = 0
   }
 
-  method reiniciarLlaves() {
-    llaves.removeAll(llaves)
-  }
-
   method reiniciarVidas() {
     if(vidas < 3) {
       vidas = 3
@@ -77,14 +89,14 @@ object personaje {
         return self.llaves().size() == 3 && self.puntos() >= 8500
   }
   
-  method image() = "personaje.png"
-
   method position() = position
 
   method moveteADerecha(posiciones) {
     const nuevaDireccion = game.at((game.width()-1).min(position.x() + 1), position.y())
-    if(not posiciones.contains(nuevaDireccion))
+    if(not posiciones.contains(nuevaDireccion)) {
+      image = "personajeD.png"
       position = nuevaDireccion
+    }
     nivelActual.terminarNivel()
   }
 
@@ -94,8 +106,10 @@ object personaje {
 
   method moveteAIzquierda(posiciones) {
     const nuevaDireccion = game.at(0.max(position.x()-1), position.y())
-    if(not posiciones.contains(nuevaDireccion))
+    if(not posiciones.contains(nuevaDireccion)) {
+      image = "personajeI.png"
       position = nuevaDireccion
+    }
   }
 
   method moveteArriba(posiciones) {
